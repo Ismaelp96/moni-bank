@@ -48,6 +48,8 @@ const mensagens = {
 }
 
 function verificaCampo(campo) {
+  let mensagem = ''
+  campo.setCustomValidity('')
   if (campo.name == 'cpf' && campo.value.length >= 11) {
     ehUmCPF(campo)
   }
@@ -55,5 +57,18 @@ function verificaCampo(campo) {
     maiorDeIdade(campo)
   }
 
-  console.log(campo.validity)
+  tiposDeErro.forEach((erro) => {
+    if (campo.validity[erro]) {
+      mensagem = mensagens[campo.name][erro]
+      console.log(mensagem)
+    }
+  })
+  const mensagemErro = campo.parentNode.querySelector('.mensagem-erro')
+  const validadordeInput = campo.checkValidity()
+
+  if (!validadordeInput) {
+    mensagemErro.textContent = mensagem
+  } else {
+    mensagemErro.textContent = ''
+  }
 }
